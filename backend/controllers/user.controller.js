@@ -26,7 +26,7 @@ export const register = async (req, res) => {
     secure: true,
     maxAge: 60 * 60 * 1000,
   });
-  res.status(201).json({ message: "user created succesfully", newUser , token});
+  res.status(201).json({ message: "user created succesfully", newUser, token });
 };
 
 export const login = async (req, res) => {
@@ -48,10 +48,9 @@ export const login = async (req, res) => {
 };
 
 export const profile = async (req, res) => {
-  const user = await User.findById(req.user.id);
+  const user = await User.findById(req.user.id).select("-password");
   res.json({
-    name: user.name,
-    email: user.email,
+    user,
     aadhaar: decrypt(user.aadhaar),
   });
 };
