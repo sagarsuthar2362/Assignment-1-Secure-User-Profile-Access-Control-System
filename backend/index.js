@@ -23,8 +23,8 @@ app.use("/api/v1/user", userAuthRoutes);
 //error handling middleware
 app.use((err, req, res, next) => {  
   console.log(err)
-  const statusCode = err.status;
-  const message = err.message;
+  const statusCode = err.status || 500;
+  const message = err.message || "internal server error";
 
   res.status(statusCode).json({ message });
 });

@@ -33,18 +33,24 @@ export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
     throw { status: 400, message: "fields cannot be empty" };
-  } else {
-    const user = await User.findOne({ email });
-    if (!user || !(await bcrypt.compare(password, user.password)))
-      return { throw: 401, message: "invalid credentials" };
-    else {
-      const token = generateToken(user._id);
-      res.cookie("token", token, {
-        secure: true,
-      });
-      res.status(200).json({ message: "user can login", token });
-    }
   }
+  const isUserExist = await User.findOne({ email });
+  if (!isUserExist) {
+    throw { status: 404, message: "user does not exist" };
+  }
+  const isPasswordCorrect = await bcrypt.compare(
+    password,
+    isUserExist.password
+  );
+  if (!isPasswordCorrect) {
+    throw { status: 401, message: "Invalid credentials" };
+  }
+  const token = generateToken(isUserExist._id);
+  res.cookie("token", token, {
+    maxAge: 60 * 60 * 1000,
+    secure: true,
+  });
+  res.status(200).json({ message: "user logged in succesfully", token });
 };
 
 export const profile = async (req, res) => {

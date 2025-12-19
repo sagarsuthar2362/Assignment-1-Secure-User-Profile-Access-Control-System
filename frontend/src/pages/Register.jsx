@@ -24,9 +24,10 @@ export default function Register() {
       });
       const token = res.data.token;
       localStorage.setItem("token", token);
-
       if (res.status === 201 && token) {
-        navigate("/dashboard");
+        navigate("/dashboard", {
+          state: res.data?.message || "user registered succesfully",
+        });
       }
     } catch (error) {
       console.log(error);
@@ -44,6 +45,7 @@ export default function Register() {
           placeholder="Enter your name"
           className="w-full p-2 border mb-4 rounded"
           required
+          autoComplete="off"
         />
 
         <input
@@ -52,6 +54,7 @@ export default function Register() {
           placeholder="johndoe@gmail.com"
           className="w-full p-2 border mb-4 rounded"
           required
+          autoComplete="off"
         />
 
         <input
@@ -60,6 +63,7 @@ export default function Register() {
           placeholder="******"
           className="w-full p-2 border mb-4 rounded"
           required
+          autoComplete="off"
         />
 
         <input
@@ -68,6 +72,7 @@ export default function Register() {
           placeholder="Enter your aadhar number"
           className="w-full p-2 border mb-4 rounded"
           required
+          autoComplete="off"
         />
 
         <button className="w-full bg-black text-white py-2 rounded cursor-pointer">

@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
+import { useLocation } from "react-router-dom";
+import { toast, ToastContainer } from "react-toastify";
 
 const baseURL = import.meta.env.VITE_BACKEND_BASE_URL;
 
 export default function Dashboard() {
   const [user, setUser] = useState(null);
   const [aadhaar, setAadhaar] = useState(null)
+  const location = useLocation()
 
   useEffect(() => {
     const token = localStorage.getItem("token");
@@ -20,7 +23,7 @@ export default function Dashboard() {
         });
         setUser(res.data.user)
         setAadhaar(res.data.aadhaar)
-        console.log(res);
+        toast.success(location.state)
       } catch (error) {
         console.log(error);
       }
@@ -33,6 +36,7 @@ export default function Dashboard() {
 
   return (
     <div className="min-h-screen bg-gray-100 flex items-center justify-center">
+      <ToastContainer/>
       <div className="bg-white p-8 rounded-lg shadow w-96">
         <h2 className="text-2xl font-bold mb-4">Profile</h2>
 
